@@ -1,14 +1,6 @@
-# Maven
-target/
-
-# TypeScript
-node_modules/
-dist/
-
-# IDEs
+# 编辑器配置
 .idea/
 .vscode/
-*.iml
 
 # Local environment
 .env
@@ -23,11 +15,20 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Java runtime dumps
-hs_err_pid*
-replay_pid*
-
 # Temporary files
 *.tmp
 *.swp
 *.swo
+
+# Python 构建与缓存
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+build/
+dist/

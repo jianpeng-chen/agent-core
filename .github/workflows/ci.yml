@@ -1,0 +1,31 @@
+name: Python checks
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.12", "3.13", "3.14"]
+    env:
+      UV_PYTHON: ${{ matrix.python }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          version: "0.11.13"
+      - run: uv sync --locked --dev
+      - name: Verify interpreter
+        run: |
+          uv run --frozen python -c 'import os, sys; actual = f"{sys.version_info.major}.{sys.version_info.minor}"; assert actual == os.environ["UV_PYTHON"], actual'
+      - run: uv run --frozen ruff check .
+      - run: uv run --frozen ruff format --check .
+      - run: uv run --frozen mypy
+      - run: uv run --frozen pytest
+      - run: uv build
+      - run: uv run --frozen agent-core --demo --once smoke
